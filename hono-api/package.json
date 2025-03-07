@@ -6,7 +6,10 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
-    "hono": "^4.7.4"
+    "@types/jsonwebtoken": "^9.0.9",
+    "dotenv": "^16.4.7",
+    "hono": "^4.7.4",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
