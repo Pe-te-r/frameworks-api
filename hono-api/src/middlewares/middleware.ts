@@ -15,30 +15,6 @@ export const verifyToken = (token:string) => {
 };
 
 
-export const authRoleMiddleware = async(allowedRoles:string) => {
-  return async (c:Context, next:Next) => {
-    // Step 1: Verify the JWT token
-    const token = c.req.header('Authorization')?.split(' ')[1];
-
-    if (!token) {
-      return c.json({ message: 'Access denied. No token provided.' }, 401);
-    }
-
-    try {
-      const decoded:any = verifyToken(token);
-      c.set('user', decoded); // Attach user data to the context
-
-      // Step 2: Check if the user's role is allowed
-      if (!allowedRoles.includes(decoded.role)) {
-        return c.json({ message: 'Forbidden. You do not have the required role.' }, 403);
-      }
-
-      await next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-      return c.json({ message: 'Invalid token.' }, 401);
-    }
-  };
-};
 
 export const userRoleMiddleware=async (c:Context,next:Next) => {
   const token = c.req.header('Authorization')?.split(' ')[1];
@@ -53,6 +29,49 @@ export const userRoleMiddleware=async (c:Context,next:Next) => {
 
       // Step 2: Check if the user's role is allowed
       if ('user' !== decoded.role){
+        return c.json({ message: 'Forbidden. You do not have the required role.' }, 403);
+      }
+
+      await next(); // Proceed to the next middleware or route handler
+    } catch (error) {
+      return c.json({ message: 'Invalid token.' }, 401);
+    }
+}
+export const adminRoleMiddleware=async (c:Context,next:Next) => {
+  const token = c.req.header('Authorization')?.split(' ')[1];
+
+    if (!token) {
+      return c.json({ message: 'Access denied. No token provided.' }, 401);
+    }
+
+    try {
+      const decoded:any = verifyToken(token);
+      c.set('user', decoded); // Attach user data to the context
+
+      // Step 2: Check if the user's role is allowed
+      console.log(decoded.role)
+      if ('admin' !== decoded.role){
+        return c.json({ message: 'Forbidden. You do not have the required role.' }, 403);
+      }
+
+      await next(); // Proceed to the next middleware or route handler
+    } catch (error) {
+      return c.json({ message: 'Invalid token.' }, 401);
+    }
+}
+export const allRoleMiddleware=async (c:Context,next:Next) => {
+  const token = c.req.header('Authorization')?.split(' ')[1];
+
+    if (!token) {
+      return c.json({ message: 'Access denied. No token provided.' }, 401);
+    }
+
+    try {
+      const decoded:any = verifyToken(token);
+      c.set('user', decoded); // Attach user data to the context
+
+      // Step 2: Check if the user's role is allowed
+      if (!decoded.role){
         return c.json({ message: 'Forbidden. You do not have the required role.' }, 403);
       }
 

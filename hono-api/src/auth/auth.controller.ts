@@ -13,9 +13,11 @@ export const register_user = async(c:Context)=>{
 export const login_user = async(c:Context)=>{
     try{
         const user = await c.req.json()
+        console.log(user)
         const token = generateToken(user.email,user.role)
         return c.json({'user':user,'token':token})
-    }catch{
+    }catch(error){
+        console.log(error)
         return c.json({'message':'an error occured here'})
     }
 }
