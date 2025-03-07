@@ -7,7 +7,13 @@ const users=[
 ]
 
 export const register_user = async(c:Context)=>{
-    return c.json({'message':users})
+    try{
+        const user=await c.req.json()
+
+        return c.json({'message':user})
+    }catch(error){
+        return c.json({'error':error},500)
+    }
 }
 
 export const login_user = async(c:Context)=>{

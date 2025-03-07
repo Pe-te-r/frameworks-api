@@ -7,6 +7,10 @@ const users=[
 ]
 
 export const getAllUsers = async(c:Context)=>{
+    try{
+    }catch(error){
+
+    }
     return c.json({'message':users})
 }
 export const getOneUser=async(c:Context)=>{
