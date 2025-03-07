@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { sqliteTable } from "drizzle-orm/sqlite-core";
 import * as t from "drizzle-orm/sqlite-core";
 
@@ -21,3 +22,25 @@ export const notes = sqliteTable("notes", {
   userId: t.integer("user_id").references(() => users.id),
   note: t.text("note")
 });
+
+export const usersRelations = relations(users, ({ one, many }) => ({
+  auth: one(auth, {
+    fields: [users.id],
+    references: [auth.id],
+  }),
+  notes: many(notes),
+}));
+
+export const authRelations = relations(auth, ({ one }) => ({
+  user: one(users, {
+    fields: [auth.id],
+    references: [users.id],
+  }),
+}));
+
+export const notesRelations = relations(notes, ({ one }) => ({
+  user: one(users, {
+    fields: [notes.userId],
+    references: [users.id],
+  }),
+}));
