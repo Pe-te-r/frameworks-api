@@ -1,19 +1,32 @@
 import type { Context } from "hono";
-const users=[
-    {'id':1,'name':'peter','email':'peter@gmail.com'},
-    {'id':2,'name':'joy','email':'joy@gmail.com'},
-    {'id':3,'name':'shakirah','email':'shakirah@gmail.com'},
-    {'id':4,'name':'admin','email':'admin@gmail.com'},
-]
+import { getAllUsersService, getOneUser } from "./users.service.js";
+
 
 export const getAllUsers = async(c:Context)=>{
     try{
+        const users= await getAllUsersService()
+        if(users.length < 1){
+            return c.json({'error':'no user found'},404)
+        }
+        return c.json({'message':users})
     }catch(error){
 
     }
-    return c.json({'message':users})
 }
-export const getOneUser=async(c:Context)=>{
+export const getOneUserControl=async(c:Context)=>{
     const id:number = Number(c.req.param('id'))
-    return c.json({'message':users[id]})
+    const user = await getOneUser(id)
+
+    if(!user){
+        return c.json({'error':'user not found'},404)
+    }
+    const storedUserObject = c.get('user')
+    if(storedUserObject.email !== user.email && storedUserObject.role !== 'user'){
+        return c.json({'error':'action not authorized'},403)
+    }
+    return c.json({'message':user},200)
+}
+
+export const updateUser=async(c:Context)=>{
+    // const
 }

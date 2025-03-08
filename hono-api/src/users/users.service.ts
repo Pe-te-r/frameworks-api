@@ -50,3 +50,10 @@ export const deleteUser=async(id:number): Promise<string | undefined>=>{
     .returning({ deletedId: users.id }).execute();
     return String(deletedUserIds)
 }
+
+
+export const getAllUsersService = async (limit: number = 10): Promise<userType[]> => {
+        const result = await db.select().from(users).limit(limit);
+        return result;
+  
+}
