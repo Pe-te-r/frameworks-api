@@ -57,3 +57,6 @@ export const getAllUsersService = async (limit: number = 10): Promise<userType[]
         return result;
   
 }
+export const updateUserService = async(id:number,user:any)=>{
+    return await db.update(users).set(user).where(eq(users.id,id)).returning().execute()
+}

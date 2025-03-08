@@ -3,14 +3,7 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../middlewares/middleware.js";
 import { loginSchema, registerSchema } from "./auth.schema.js";
 import { createUser, savePass, verifyPassword } from "./auth.service.js";
-import { json } from "stream/consumers";
 import { deleteUser, getOneUserEmail } from "../users/users.service.js";
-import type { UserTypeT } from "../users/user.type.js";
-const users=[
-    {'id':1,'name':'peter','email':'peter@gmail.com'},
-    {'id':3,'name':'shakirah','email':'shakirah@gmail.com'},
-    {'id':2,'name':'joy','email':'joy@gmail.com'},
-]
 
 export const register_user = async(c:Context)=>{
     try{
