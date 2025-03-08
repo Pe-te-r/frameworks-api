@@ -21,12 +21,22 @@ export const getOneUserControl=async(c:Context)=>{
         return c.json({'error':'user not found'},404)
     }
     const storedUserObject = c.get('user')
-    if(storedUserObject.email !== user.email && storedUserObject.role !== 'user'){
+   if(storedUserObject.email!== user.email && storedUserObject.role !== 'user'){
         return c.json({'error':'action not authorized'},403)
     }
     return c.json({'message':user},200)
 }
 
 export const updateUser=async(c:Context)=>{
-    // const
+    const id:number = Number(c.req.param('id'))
+    const user = await getOneUser(id)
+
+    if(!user){
+        return c.json({'error':'user not found'},404)
+    }
+    const storedUserObject = c.get('user')
+   if(storedUserObject.email!== user.email && storedUserObject.role !== 'user'){
+        return c.json({'error':'action not authorized'},403)
+    }
+    // update user
 }
