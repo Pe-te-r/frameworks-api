@@ -26,3 +26,7 @@ export const getOnseUserNote=async(id:number)=>{
 export const createNoteService=async(note:any)=>{
     return await db.insert(notes).values(note).returning().execute()
 }
+
+export const deleteNoteService=async(id:number)=>{
+    return await db.delete(notes).where(eq(notes.id,id)).returning().execute()
+}

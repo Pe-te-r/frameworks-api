@@ -1,6 +1,6 @@
 import type { Context } from "hono";
-import { createNoteService, getAllNotes, getOnseUserNote } from "./notes.service.js";
-import { getOneUser } from "../users/users.service.js";
+import { createNoteService, deleteNoteService, getAllNotes, getOnseUserNote } from "./notes.service.js";
+import { getOneUser, getOneUserEmail } from "../users/users.service.js";
 import { noteSchemaData } from "./note.schema.js";
 
 export const allNotes=async(c:Context)=>{
@@ -48,5 +48,18 @@ export const createNote=async(c:Context)=>{
 
     } catch {
         return c.json({'error':'an error occured'},500)
+    }
+}
+
+export const deleteNote=async(c:Context)=>{
+    try {
+       const id = c.req.param('id') 
+
+
+        const delete_result= await deleteNoteService(Number(id))
+        console.log(delete_result)
+        return c.json({'message':'deleted success'},200)
+    } catch  {
+        return c.json({'error':'an error occured'},500)        
     }
 }
