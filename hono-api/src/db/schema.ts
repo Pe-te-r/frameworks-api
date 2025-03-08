@@ -13,13 +13,13 @@ export const users = sqliteTable("users", {
 ]);
 
 export const auth = sqliteTable("auth", {
-  id: t.integer("id").primaryKey().references(() => users.id),
+  id: t.integer("id").primaryKey().references(() => users.id,{onDelete:'cascade'}),
   password: t.text("password").notNull()
 });
 
 export const notes = sqliteTable("notes", {
   id: t.integer("id").primaryKey({ autoIncrement: true }),
-  userId: t.integer("user_id").references(() => users.id),
+  userId: t.integer("user_id").references(() => users.id,{onDelete:'cascade'}),
   note: t.text("note")
 });
 

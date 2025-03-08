@@ -60,3 +60,7 @@ export const getAllUsersService = async (limit: number = 10): Promise<userType[]
 export const updateUserService = async(id:number,user:any)=>{
     return await db.update(users).set(user).where(eq(users.id,id)).returning().execute()
 }
+
+export const deleteUserService = async(id:number)=>{
+    return await db.delete(users).where(eq(users.id,id)).returning({'id':users.id}).execute()
+}
