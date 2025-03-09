@@ -15,3 +15,6 @@ export const verifyPassword=async(id,password)=>{
     const stored_pass=await db.select().from(auth).limit(1).where(eq(auth.id,id))
     return await bcrypt.compare(password,stored_pass[0].password)
 }
+export const getAllUserService=async()=>{
+    return await db.select().from(users)
+}

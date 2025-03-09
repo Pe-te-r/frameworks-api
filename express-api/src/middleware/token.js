@@ -26,3 +26,11 @@ export const authenticate = (req, res, next) => {
     res.status(400).json({ error: 'Invalid token.' });
   }
 };
+
+export const adminRole=(req,res,next)=>{
+  const user=req.user
+  if(user.role !== 'admin'){
+    return res.status(403).json({'error':'action forbidden you are not permitted'})
+  }
+  next()
+}
