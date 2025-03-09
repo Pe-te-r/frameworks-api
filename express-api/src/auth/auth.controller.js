@@ -11,7 +11,7 @@ export const login = async (req, res) => {
 
     const { email, password } = req.body;
     const user_exits = await getUserByEmail(email)
-    if(!user_exits){
+    if(user_exits.length<1){
         return res.status(404).json({'error':'user not found'})
     }
 
@@ -29,11 +29,13 @@ export const register =async(req,res)=>{
         return res.status(400).json({ 'errors': errors.array() });
     }
     const {firstName,lastName,email,password}=req.body
+    const user_exits =await getUserByEmail(email)
+    if(user_exits.length>0)return res.status(409).json({'error':'email exits'})
     const role = req.body?.role || 'user'; 
     const user = { firstName, lastName, email, role };
 
     const result= await registerUserService(user)
-    if(!result){
+    if(result.length<1){
         return res.status(422).json({'error':'user not created'})
     }
     const savePasswordResult=await savePassword(password,Number(result[0].id)) 
