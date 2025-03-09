@@ -1,18 +1,26 @@
 import { validationResult } from "express-validator";
 import { registerUserService ,savePassword} from "./auth.service.js";
-import { deleteUserById } from "../user/user.service.js";
+import { deleteUserById, getUserByEmail, verifyPassword } from "../user/user.service.js";
+import { signJwt } from "../middleware/token.js";
 
-export const login =  (req, res) => {
+export const login = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ 'errors': errors.array() });
     }
 
     const { email, password } = req.body;
-    const user = { email, password };
-    console.log('User logged in:', user);
+    const user_exits = await getUserByEmail(email)
+    if(!user_exits){
+        return res.status(404).json({'error':'user not found'})
+    }
 
-    res.status(200).json({ message: 'User logged in successfully', user });
+    const verified = await verifyPassword(user_exits[0].id,password)
+    if(!verified){
+        return res.status(401).json({'error':'invalid identity'})
+    }
+    const token = signJwt({id:user_exits[0].id,email:user_exits[0].email,role:user_exits[0].role})
+    res.status(200).json({ message: 'User logged in successfully','user':user_exits[0],token});
 };
 
 export const register =async(req,res)=>{
