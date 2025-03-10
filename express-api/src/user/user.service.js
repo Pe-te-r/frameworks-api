@@ -18,7 +18,7 @@ export const verifyPassword=async(id,password)=>{
 export const getAllUserService=async()=>{
     return await db.select().from(users)
 }
-export const getOneUserServiceId=async(id,notes)=>{
+export const getOneUserServiceId=async(id,notes=false)=>{
     if(notes=='true'){
     return await db.query.users.findFirst({
         where:eq(users.id,id),
