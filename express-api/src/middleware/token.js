@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { validationResult } from "express-validator";
 
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -34,3 +35,19 @@ export const adminRole=(req,res,next)=>{
   }
   next()
 }
+
+
+export const validateRequest = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            errors: errors.array().map(err => ({
+                type: "field",
+                msg: err.msg,
+                path: err.param,
+                location: err.location,
+            }))
+        });
+    }
+    next();
+};
