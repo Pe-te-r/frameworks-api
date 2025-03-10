@@ -24,3 +24,13 @@ export const getOneNoteService=async(id)=>{
         }
     )
 }
+
+export const deleteNoteService=async(id)=>{
+    try {
+        await db.delete(notes).where(eq(notes.id,id))
+        return true
+        
+    } catch (error) {
+        return false
+    }
+}

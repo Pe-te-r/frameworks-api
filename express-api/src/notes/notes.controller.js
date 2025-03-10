@@ -1,5 +1,5 @@
 import { getOneUserServiceId } from "../user/user.service.js"
-import { createNoteService, getAllNotesService, getOneNoteService, getOneUserNoteService } from "./notes.service.js"
+import { createNoteService, deleteNoteService, getAllNotesService, getOneNoteService, getOneUserNoteService } from "./notes.service.js"
 
 export const getAllNotes=async(req,res)=>{
     try {
@@ -53,5 +53,16 @@ export const getOneNote=async(req,res)=>{
     } catch (error) {
         console.log(error)
         return req.status(500).json({'error':'an error occured'})
+    }
+}
+
+export const deleteNote=async(req,res)=>{
+    try {
+        const id = req.params.id
+        const note_exits = await deleteNoteService(Number(id))    
+        if(!note_exits)return res.status(404).json({'status':'error','message':'note not found'})
+        return res.status(200).json({'status':'success','message':"deleted success",})
+    } catch (error) {
+        return res.status(500).json({'error':'an error occured'})
     }
 }

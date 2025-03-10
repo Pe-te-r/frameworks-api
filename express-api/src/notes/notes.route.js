@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {body} from 'express-validator'
 import { adminRole, authenticate, validateRequest } from "../middleware/token.js";
-import { createNote, getAllNotes, getOneNote, getOneUserNote } from "./notes.controller.js";
+import { createNote, deleteNote, getAllNotes, getOneNote, getOneUserNote } from "./notes.controller.js";
 
 
 const noteValidate=[
@@ -18,3 +18,4 @@ notes_route.get('/',adminRole,getAllNotes)
 notes_route.get('/:id',getOneNote)
 notes_route.get('/:id/user',getOneUserNote)
 notes_route.post('/',noteValidate,validateRequest,createNote)
+notes_route.delete('/:id',deleteNote)
