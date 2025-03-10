@@ -23,3 +23,12 @@ export const getOneUserServiceId=async(id)=>{
         where:eq(users.id,id)
     })
 }
+export const deletUserService=async(id)=>{
+    try {
+        await db.delete(users).where(eq(users.id,id))
+        return true
+        
+    } catch (error) {
+        return false
+    }
+}
