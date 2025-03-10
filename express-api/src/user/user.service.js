@@ -18,3 +18,8 @@ export const verifyPassword=async(id,password)=>{
 export const getAllUserService=async()=>{
     return await db.select().from(users)
 }
+export const getOneUserServiceId=async(id)=>{
+    return await db.query.users.findFirst({
+        where:eq(users.id,id)
+    })
+}
