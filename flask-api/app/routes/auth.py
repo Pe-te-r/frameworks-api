@@ -1,12 +1,7 @@
-from flask import Blueprint
-from flask_restx import Api,Resource
+from flask_restx import Resource
 from .schema.auth_schema import auth_ns,register_data,login_data
 from app.util import response,validate_required_fields
 from app.db import User
-
-
-auth_bp = Blueprint('auth',__name__)
-api=Api(auth_bp,doc='/docs')
 
 
 @auth_ns.route('/register')
@@ -44,5 +39,3 @@ class Login(Resource):
             token=user_exits.generate_token()
             return response(status='success',message='Login was success',data={'user':user_exits.to_json(),'token':token})
         return response(status='error',message='Login error',error={'message':'password not correct'},status_code=400)
- 
-api.add_namespace(auth_ns)
