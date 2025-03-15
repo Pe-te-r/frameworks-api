@@ -16,8 +16,15 @@ register_data=auth_ns.model(
 user_output = auth_ns.model(
     "UserOutput",
     {
-        "id": fields.Integer(description="User ID"),
-        "username": fields.String(description="User's username"),
+
+    'first_name':fields.String(required=True,description='user first name'),
+    'last_name':fields.String(required=True,description='user last name'),
         "email": fields.String(description="User's email"),
     },
 )
+
+login_data=auth_ns.model('login',{
+     'email':fields.String(required=True,description='user email'),
+    'password':fields.String(required=True,description='user email'),
+    
+})
