@@ -41,7 +41,8 @@ class Login(Resource):
         if not user_exits:
             return response(status='error',message='User not found')
         if user_exits.verify_password(valid_field['password']):
-            return response(status='success',message='Login was success',data=data)
+            token=user_exits.generate_token()
+            return response(status='success',message='Login was success',data={'user':user_exits.to_json(),'token':token})
         return response(status='error',message='Login error',error={'message':'password not correct'},status_code=400)
  
 api.add_namespace(auth_ns)

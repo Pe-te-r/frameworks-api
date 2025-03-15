@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from datetime import timedelta
+from flask_jwt_extended import create_access_token
 
 db=SQLAlchemy()
 bcrypt=Bcrypt()
@@ -16,7 +18,12 @@ class User(db.Model):
     # Relationships
     password = db.relationship("Password", back_populates="user", uselist=False, cascade="all, delete")
     notes = db.relationship("Notes", back_populates="user", cascade="all, delete")
-    
+    def to_json(self):
+        return {
+            'id':self.id,
+            'email':self.email,
+            'role':self.role
+        }
     @classmethod
     def create_user(cls,user):
         try:
@@ -39,6 +46,16 @@ class User(db.Model):
     def verify_password(self,password):
         return Password.verify_password(self.password.hashed_password,password)
 
+    def generate_token(self,days=1):
+        """
+        Generates JWT Token based on user ID, email, and role.
+        """
+        token_payload = {
+            "id": self.id,
+            "email": self.email,
+            "role": self.role
+        }
+        return create_access_token(identity=token_payload, expires_delta=timedelta(days=days))
 class Password(db.Model):
     __tablename__ = 'passwords'
 
